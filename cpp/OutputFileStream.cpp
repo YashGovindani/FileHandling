@@ -1,4 +1,8 @@
 #include<stdio.h>
+#include<iostream>
+#include<string.h>
+#include<limits>
+#include<ios>
 class OutputFileStream
 {
 private:
@@ -56,10 +60,27 @@ return *this;
 }
 OutputFileStream & operator<<(const char *str)
 {
-int i;
 this->lastOperationFailed=1;
 if(!this->f) return *this;
 if(!str) return *this;
+fputs(str,this->f);
+this->lastOperationFailed=0;
+return *this;
+}
+OutputFileStream & operator<<(string &str)
+{
+this->lastOperationFailed=1;
+if(!this->f) return *this;
+fputs(str.c_str(),this->f);
+this->lastOperationFailed=0;
+return *this;
+}
+OutputFileStream & operator<<(int num)
+{
+char str[21];
+sprintf(str,"%d",num);
+this->lastOperationFailed=1;
+if(!this->f) return *this;
 fputs(str,this->f);
 this->lastOperationFailed=0;
 return *this;
@@ -68,9 +89,23 @@ return *this;
 
 int main()
 {
+string name;
+int rollNumber;
+std::cout<<"Enter name : ";
+getline(std::cin,name);
+std::cin.ignore(numeric_limits<streamsize>::max(),'\n');
+std::cout<<"Enter roll number : ";
+std::cin<<rollNumber;
+std::cin.ignore(numeric_limits<streamsize>::max(),'\n');
+std::cout<<"Enter gender (M/F): ";
+std::cin>>gender;
+std::cin.ignore(numeric_limits<streamsize>::max(),'\n');
 OutputFileStream ofs("pqr.xyz",OutputFileStream::append);
-ofs<<'Y';
-ofs<<"XYZ";
+ofs<<name;
+ofs<<'\n';
+ofs<<rollNumber;
+ofs<<" ";
+ofs<<gender;
 ofs.close();
 return 0;
 }
