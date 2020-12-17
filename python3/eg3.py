@@ -1,0 +1,5 @@
+f=open("pqr.xyz","w")
+f.write("God is great.\n")
+f.write("Ujjain is the city of Gods.\n")
+print(f.closed)
+f.close()
