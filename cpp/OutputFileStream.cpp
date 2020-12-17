@@ -22,7 +22,7 @@ this->open(fileName,mode);
 }
 void open(const char *fileName,int mode)
 {
-if(f)
+if(this->f)
 {
 fclose(this->f);
 this->f=NULL;
