@@ -1,0 +1,7 @@
+f=open("pqr.xyz","r")
+while True:
+    print(f.tell())
+    a=f.read(4)
+    if len(a)==0: break
+    print(a.strip())
+f.close()
