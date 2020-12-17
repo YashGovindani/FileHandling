@@ -1,0 +1,7 @@
+f=open("pqr.xyz","w")
+f.write("Ujjain\n")
+x=f.write("Indore\n")
+print(x)
+x=f.write("Dewas\n")
+print(x)
+f.close()
