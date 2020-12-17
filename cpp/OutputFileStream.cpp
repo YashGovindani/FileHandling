@@ -54,14 +54,23 @@ fputc(c,this->f);
 this->lastOperationFailed=0;
 return *this;
 }
-OutputFileStream & operator<<(char *str)
+OutputFileStream & operator<<(const char *str)
 {
 int i;
 this->lastOperationFailed=1;
 if(!this->f) return *this;
 if(!str) return *this;
-for(i=0;i<sizeof(str);i++) fputc(str[i],this->f);
+fputs(str,this->f);
 this->lastOperationFailed=0;
 return *this;
 }
 };
+
+int main()
+{
+OutputFileStream ofs("pqr.xyz",OutputFileStream::append);
+ofs<<'Y';
+ofs<<"XYZ";
+ofs.close();
+return 0;
+}
