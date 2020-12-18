@@ -19,7 +19,7 @@ this->open(fileName);
 }
 void open(const char *fileName)
 {
-if(this->file)
+if(this->f)
 {
 fclose(this->f);
 this->lastOperationFailed=0;
@@ -54,9 +54,10 @@ int main()
 {
 char c;
 InputFileStream ifs("pqr.xyz");
-while(!ifs.fail())
+while(1)
 {
 ifs>>c;
+if(ifs.fail()) break;
 printf("%c",c);
 }
 ifs.close();
