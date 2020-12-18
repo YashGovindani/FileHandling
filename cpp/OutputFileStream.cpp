@@ -67,7 +67,7 @@ fputs(str,this->f);
 this->lastOperationFailed=0;
 return *this;
 }
-OutputFileStream & operator<<(string &str)
+OutputFileStream & operator<<(std::string &str)
 {
 this->lastOperationFailed=1;
 if(!this->f) return *this;
@@ -89,18 +89,17 @@ return *this;
 
 int main()
 {
-string name;
+std::string name;
 int rollNumber;
+char gender;
 std::cout<<"Enter name : ";
 getline(std::cin,name);
-std::cin.ignore(numeric_limits<streamsize>::max(),'\n');
 std::cout<<"Enter roll number : ";
-std::cin<<rollNumber;
-std::cin.ignore(numeric_limits<streamsize>::max(),'\n');
+std::cin>>rollNumber;
+std::cin.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
 std::cout<<"Enter gender (M/F): ";
 std::cin>>gender;
-std::cin.ignore(numeric_limits<streamsize>::max(),'\n');
-OutputFileStream ofs("pqr.xyz",OutputFileStream::append);
+OutputFileStream ofs("pqr.xyz",OutputFileStream::overwrite);
 ofs<<name;
 ofs<<'\n';
 ofs<<rollNumber;
