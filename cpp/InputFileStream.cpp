@@ -9,8 +9,9 @@ class InputFileStream
 private:
 FILE *f;
 int lastOperationFailed;
+int mode;
 public:
-const static int read=1;
+const static int reading=1;
 const static int binary=4;
 InputFileStream()
 {
@@ -23,7 +24,7 @@ InputFileStream(const char *fileName)
 this->mode=-1;
 this->lastOperationFailed=0;
 this->f=NULL;
-this->open(fileName);
+this->open(fileName,reading);
 }
 InputFileStream(const char *fileName,int mode)
 {
@@ -40,10 +41,10 @@ fclose(this->f);
 this->lastOperationFailed=0;
 }
 this->lastOperationFailed=1;
-if(mode!=read && mode!=(read | binary)) return;
+if(mode!=reading && mode!=(reading | binary)) return;
 if(!fileName) return;
 this->mode=mode;
-if(mode==read) this->f=fopen(fileName,"r");
+if(mode==reading) this->f=fopen(fileName,"r");
 else this->f=fopen(fileName,"rb");
 if(!this->f) return;
 this->lastOperationFailed=0;
@@ -120,22 +121,85 @@ this->lastOperationFailed=0;
 num=atoi(a);
 return *this;
 }
+void read(void *stream,unsigned long size)
+{
+this->lastOperationFailed=1;
+if(!this->f) return;
+if(size<1) return;
+if(feof(this->f)) return;
+fread((char *)stream,size,1,this->f);
+if(!feof(this->f))this->lastOperationFailed=0;
+}
 void close()
 {
 this->lastOperationFailed=0;
 if(this->f) fclose(this->f);
 }
 };
+class Student
+{
+private:
+int rollNumber;
+std::string name;
+char gender;
+public:
+Student()
+{
+this->rollNumber=0;
+this->name.clear();
+this->gender='\0';
+}
+Student(int rollNumber,std::string &name,char gender)
+{
+this->rollNumber=rollNumber;
+this->name=name;
+this->gender=gender;
+}
+void setRollNumber(int rollNumber)
+{
+this->rollNumber=rollNumber;
+}
+int getRollNumber()
+{
+return this->rollNumber;
+}
+void setName(std::string &name)
+{
+this->name=name;
+}
+std::string & getName()
+{
+return this->name;
+}
+void setGender(char gender)
+{
+this->gender=gender;
+}
+char getGender()
+{
+return this->gender;
+}
+};
 int main()
 {
 char c;
 InputFileStream ifs("pqr.xyz");
-while(1)
-{
-ifs>>c;
-if(ifs.fail()) break;
-printf("%c",c);
-}
+std::string name;
+int rollNumber;
+char gender;
+ifs>>name;
+ifs>>rollNumber;
+ifs>>gender;
+std::cout<<"Name : "<<name<<std::endl;
+std::cout<<"Roll Number : "<<rollNumber<<std::endl;
+std::cout<<"Gender : "<<gender<<std::endl;
+ifs.close();
+Student student;
+ifs.open("xyz.pqr",InputFileStream::reading| InputFileStream::binary);
+ifs.read(&student,sizeof(student));
+std::cout<<"Name : "<<student.getName()<<std::endl;
+std::cout<<"Roll Number : "<<student.getRollNumber()<<std::endl;
+std::cout<<"Gender : "<<student.getGender()<<std::endl;
 ifs.close();
 return 0;
 }
